@@ -31,6 +31,14 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     }
   }
 
+  describe("#debug and passing a single string") {
+    it("should call .debug on the underlying LoggerLike") {
+      val (subject, underlying) = writerWithMock()
+      subject.debug("hi")
+      verify(underlying, times(1)).debug(anyString())
+    }
+  }
+
   describe("#debug and passing a Throwable") {
     it("should call .debug on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
@@ -56,6 +64,14 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .info on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.info("hi" -> "there")
+      verify(underlying, times(1)).info(anyString())
+    }
+  }
+
+  describe("#info and passing a single string") {
+    it("should call .info on the underlying LoggerLike") {
+      val (subject, underlying) = writerWithMock()
+      subject.info("hi")
       verify(underlying, times(1)).info(anyString())
     }
   }
@@ -89,6 +105,14 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     }
   }
 
+  describe("#warn and passing a single string") {
+    it("should call .warn on the underlying LoggerLike") {
+      val (subject, underlying) = writerWithMock()
+      subject.warn("hi")
+      verify(underlying, times(1)).warn(anyString())
+    }
+  }
+
   describe("#warn and passing a Throwable") {
     it("should call .warn on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
@@ -114,6 +138,14 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .error on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.error("hi" -> "there")
+      verify(underlying, times(1)).error(anyString())
+    }
+  }
+
+  describe("#error and passing a single string") {
+    it("should call .error on the underlying LoggerLike") {
+      val (subject, underlying) = writerWithMock()
+      subject.error("hi")
       verify(underlying, times(1)).error(anyString())
     }
   }
@@ -147,6 +179,14 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     }
   }
 
+  describe("#trace and passing a single string") {
+    it("should call .trace on the underlying LoggerLike") {
+      val (subject, underlying) = writerWithMock()
+      subject.trace("hi")
+      verify(underlying, times(1)).trace(anyString())
+    }
+  }
+
   describe("#trace and passing a Throwable") {
     it("should call .trace on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
@@ -170,139 +210,6 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
       val underlying: Logger = loggerLike
     }
     (writer, loggerLike)
-  }
-
-  def writerWithDebugCapture: (LTSVLoggerLike, Function0[String]) = {
-    var debugMessage: String = ""
-    val loggerLike = new Logger {
-      override def debug(message: String): Unit = {
-        debugMessage = message
-      }
-
-      override def getName: String = ???
-
-      override def warn(msg: String): Unit = ???
-
-      override def warn(format: String, arg: scala.Any): Unit = ???
-
-      override def warn(format: String, arguments: AnyRef*): Unit = ???
-
-      override def warn(format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def warn(msg: String, t: Throwable): Unit = ???
-
-      override def warn(marker: Marker, msg: String): Unit = ???
-
-      override def warn(marker: Marker, format: String, arg: scala.Any): Unit = ???
-
-      override def warn(marker: Marker, format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def warn(marker: Marker, format: String, arguments: AnyRef*): Unit = ???
-
-      override def warn(marker: Marker, msg: String, t: Throwable): Unit = ???
-
-      override def isErrorEnabled: Boolean = true
-
-      override def isErrorEnabled(marker: Marker): Boolean = true
-
-      override def isInfoEnabled: Boolean = true
-
-      override def isInfoEnabled(marker: Marker): Boolean = true
-
-      override def isDebugEnabled: Boolean = true
-
-      override def isDebugEnabled(marker: Marker): Boolean = true
-
-      override def isTraceEnabled: Boolean = true
-
-      override def isTraceEnabled(marker: Marker): Boolean = true
-
-      override def error(msg: String): Unit = ???
-
-      override def error(format: String, arg: scala.Any): Unit = ???
-
-      override def error(format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def error(format: String, arguments: AnyRef*): Unit = ???
-
-      override def error(msg: String, t: Throwable): Unit = ???
-
-      override def error(marker: Marker, msg: String): Unit = ???
-
-      override def error(marker: Marker, format: String, arg: scala.Any): Unit = ???
-
-      override def error(marker: Marker, format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def error(marker: Marker, format: String, arguments: AnyRef*): Unit = ???
-
-      override def error(marker: Marker, msg: String, t: Throwable): Unit = ???
-
-      override def debug(format: String, arg: scala.Any): Unit = ???
-
-      override def debug(format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def debug(format: String, arguments: AnyRef*): Unit = ???
-
-      override def debug(msg: String, t: Throwable): Unit = ???
-
-      override def debug(marker: Marker, msg: String): Unit = ???
-
-      override def debug(marker: Marker, format: String, arg: scala.Any): Unit = ???
-
-      override def debug(marker: Marker, format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def debug(marker: Marker, format: String, arguments: AnyRef*): Unit = ???
-
-      override def debug(marker: Marker, msg: String, t: Throwable): Unit = ???
-
-      override def isWarnEnabled: Boolean = ???
-
-      override def isWarnEnabled(marker: Marker): Boolean = ???
-
-      override def trace(msg: String): Unit = ???
-
-      override def trace(format: String, arg: scala.Any): Unit = ???
-
-      override def trace(format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def trace(format: String, arguments: AnyRef*): Unit = ???
-
-      override def trace(msg: String, t: Throwable): Unit = ???
-
-      override def trace(marker: Marker, msg: String): Unit = ???
-
-      override def trace(marker: Marker, format: String, arg: scala.Any): Unit = ???
-
-      override def trace(marker: Marker, format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def trace(marker: Marker, format: String, argArray: AnyRef*): Unit = ???
-
-      override def trace(marker: Marker, msg: String, t: Throwable): Unit = ???
-
-      override def info(msg: String): Unit = ???
-
-      override def info(format: String, arg: scala.Any): Unit = ???
-
-      override def info(format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def info(format: String, arguments: AnyRef*): Unit = ???
-
-      override def info(msg: String, t: Throwable): Unit = ???
-
-      override def info(marker: Marker, msg: String): Unit = ???
-
-      override def info(marker: Marker, format: String, arg: scala.Any): Unit = ???
-
-      override def info(marker: Marker, format: String, arg1: scala.Any, arg2: scala.Any): Unit = ???
-
-      override def info(marker: Marker, format: String, arguments: AnyRef*): Unit = ???
-
-      override def info(marker: Marker, msg: String, t: Throwable): Unit = ???
-    }
-    val writer = new LTSVLoggerLike {
-      val underlying: Logger = loggerLike
-    }
-    (writer, () => debugMessage)
   }
 
 }
