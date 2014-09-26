@@ -55,10 +55,15 @@ import com.beachape.logging.LTSVLogger
 LTSVLogger.info("hello" -> 3)
 LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
 
-/*
-  All of the above will act "lazily" at runtime and not be computed if the respective
+/**
+  All of the above will act "lazily" at runtime and not be computed/referenced if the respective
   levels are not enabled.
-*/
+  
+  If varargs call-by-name was supported in Scala, the above would be implemented as 
+  something like 
+  
+  {{{ def warn(pairs: => (String, Any) *): Unit = if (logger.isWarnEnabled) debug(toLtsv(pairs)) }}}
+**/
 ```
 
 ## Dependencies
