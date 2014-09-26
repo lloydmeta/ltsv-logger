@@ -1,6 +1,10 @@
 # LTSV-logger [![Build Status](https://travis-ci.org/lloydmeta/ltsv-logger.svg?branch=develop)](https://travis-ci.org/lloydmeta/ltsv-logger)
 
-Performant and DRY LTSV logger wrapping SLF4J to provide nice LTSV logging for Scala. No need to wrap your LTSV pairs in 
+*What's LTSV?* [tsv.org](http://ltsv.org/) has all the details, but to get you started: 
+
+> With the LTSV format, you can parse each line by spliting with TAB (like original TSV format) easily, and extend any fields with unique labels in no particular order.
+
+LTSV-logger is a performant and DRY LTSV logger wrapping SLF4J to provide nice LTSV logging for Scala. No need to wrap your LTSV pairs in 
 `Seq`s or pay at runtime for [call-by-name](http://infoscience.epfl.ch/record/128135/files/paper.pdf) 
 argument access.
 
