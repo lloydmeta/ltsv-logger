@@ -93,6 +93,7 @@ object LTSVLoggerBuild extends Build {
   // Settings for publishing to Maven Central
   lazy val publishSettings = Seq(
     pomExtra :=
+      <url>https://github.com/lloydmeta/ltsv-logger</url>
       <licenses>
         <license>
           <name>MIT</name>
