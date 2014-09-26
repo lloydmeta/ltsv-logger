@@ -27,7 +27,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .debug on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.debug("hi" -> "there")
-      verify(underlying, times(1)).debug(anyString())
+      verify(underlying, times(1)).debug("hi:there")
     }
   }
 
@@ -35,15 +35,15 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .debug on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.debug("hi")
-      verify(underlying, times(1)).debug(anyString())
+      verify(underlying, times(1)).debug("message:hi")
     }
   }
 
   describe("#debug and passing a Throwable") {
     it("should call .debug on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
-      subject.debug(exception, "hello" -> "there")
-      verify(underlying, times(1)).debug(anyString(), anyObject[Throwable])
+      subject.debug(exception, "hello" -> "there", "lloyd" -> "meta")
+      verify(underlying, times(1)).debug("hello:there\tlloyd:meta", exception)
     }
   }
 
@@ -64,7 +64,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .info on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.info("hi" -> "there")
-      verify(underlying, times(1)).info(anyString())
+      verify(underlying, times(1)).info("hi:there")
     }
   }
 
@@ -79,8 +79,8 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
   describe("#info and passing a Throwable") {
     it("should call .info on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
-      subject.info(exception, "hello" -> "there")
-      verify(underlying, times(1)).info(anyString(), anyObject[Throwable])
+      subject.info(exception, "hello" -> "there", "info" -> "throwable")
+      verify(underlying, times(1)).info("hello:there\tinfo:throwable", exception)
     }
   }
 
@@ -101,7 +101,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .warn on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.warn("hi" -> "there")
-      verify(underlying, times(1)).warn(anyString())
+      verify(underlying, times(1)).warn("hi:there")
     }
   }
 
@@ -109,7 +109,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .warn on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.warn("hi")
-      verify(underlying, times(1)).warn(anyString())
+      verify(underlying, times(1)).warn("message:hi")
     }
   }
 
@@ -117,7 +117,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .warn on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.warn(exception, "hello" -> "there")
-      verify(underlying, times(1)).warn(anyString(), anyObject[Throwable])
+      verify(underlying, times(1)).warn("hello:there", exception)
     }
   }
 
@@ -138,7 +138,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .error on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.error("hi" -> "there")
-      verify(underlying, times(1)).error(anyString())
+      verify(underlying, times(1)).error("hi:there")
     }
   }
 
@@ -154,7 +154,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .error on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.error(exception, "hello" -> "there")
-      verify(underlying, times(1)).error(anyString(), anyObject[Throwable])
+      verify(underlying, times(1)).error("hello:there", exception)
     }
   }
 
@@ -175,7 +175,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .trace on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.trace("hi" -> "there")
-      verify(underlying, times(1)).trace(anyString())
+      verify(underlying, times(1)).trace("hi:there")
     }
   }
 
@@ -183,15 +183,15 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     it("should call .trace on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
       subject.trace("hi")
-      verify(underlying, times(1)).trace(anyString())
+      verify(underlying, times(1)).trace("message:hi")
     }
   }
 
   describe("#trace and passing a Throwable") {
     it("should call .trace on the underlying LoggerLike") {
       val (subject, underlying) = writerWithMock()
-      subject.trace(exception, "hello" -> "there")
-      verify(underlying, times(1)).trace(anyString(), anyObject[Throwable])
+      subject.trace(exception, "hello" -> "there", "trace" -> "throwable")
+      verify(underlying, times(1)).trace("hello:there\ttrace:throwable", exception)
     }
   }
 
