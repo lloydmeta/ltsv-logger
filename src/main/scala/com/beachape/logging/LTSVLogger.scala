@@ -31,7 +31,7 @@ trait LTSVLoggerLike {
 
   /* Info */
   /**
-   * Write the given key-values as an LTSV info log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values as an LTSV info log entry
    */
   @inline final def info(pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.infoImpl
   /**
@@ -41,45 +41,45 @@ trait LTSVLoggerLike {
 
   /* Debug */
   /**
-   * Write the given key-values as an LTSV debug log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values as an LTSV debug log entry
    */
   @inline final def debug(pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugImpl
 
   /**
-   * Write the given key-values and error as an LTSV debug log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values and error as an LTSV debug log entry
    */
   @inline final def debug(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugErrImpl
 
   /* Warn */
   /**
-   * Write the given key-values as an LTSV warn log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values as an LTSV warn log entry
    */
   @inline final def warn(pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnImpl
 
   /**
-   * Write the given key-values and error as an LTSV warn log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values and error as an LTSV warn log entry
    */
   @inline final def warn(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnErrImpl
 
   /* Error */
   /**
-   * Write the given key-values as an LTSV error log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values as an LTSV error log entry
    */
   @inline final def error(pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorImpl
 
   /**
-   * Write the given key-values and error as an LTSV error log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values and error as an LTSV error log entry
    */
   @inline final def error(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorErrImpl
 
   /* Trace */
   /**
-   * Write the given key-values as an LTSV trace log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values as an LTSV trace log entry
    */
   @inline final def trace(pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceImpl
 
   /**
-   * Write the given key-values and error as an LTSV trace log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values and error as an LTSV trace log entry
    */
   @inline final def trace(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceErrImpl
 
