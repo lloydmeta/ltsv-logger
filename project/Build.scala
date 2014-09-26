@@ -34,9 +34,9 @@ object LTSVLoggerBuild extends Build {
     publishSettings
 
   lazy val resolverSettings = Seq(
-        resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
-        resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-      )
+    resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
+    resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+  )
 
   lazy val ideSettings = Seq(
     // Faster "sbt gen-idea"
