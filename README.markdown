@@ -1,6 +1,6 @@
 # LTSV-logger [![Build Status](https://travis-ci.org/lloydmeta/ltsv-logger.svg?branch=develop)](https://travis-ci.org/lloydmeta/ltsv-logger)
 
-*What's LTSV?* [tsv.org](http://ltsv.org/) has all the details, but to get you started: 
+*What's LTSV?* [ltsv.org](http://ltsv.org/) has all the details, but to get you started: 
 
 > With the LTSV format, you can parse each line by spliting with TAB (like original TSV format) easily, and extend any fields with unique labels in no particular order.
 
