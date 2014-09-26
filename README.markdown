@@ -49,7 +49,7 @@ libraryDependencies ++= Seq(
 
 ## Usage
 
-``scala
+```scala
 import com.beachape.logging.LTSVLogger
 
 LTSVLogger.info("hello" -> 3)
