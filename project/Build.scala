@@ -32,6 +32,7 @@ object LTSVLoggerBuild extends Build {
     resolverSettings ++
     ideSettings ++
     testSettings ++
+    coverallsSettings ++
     scoverageSettings
 
   lazy val commonWithPublishSettings =
