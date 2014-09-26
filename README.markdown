@@ -66,7 +66,7 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
 * Doesn't implement the entire interface for SLF4J (yet), but should provide you with enough to do most of your logging
 chores.
 
-## License
+## Licence
 
 The MIT License (MIT)
 
