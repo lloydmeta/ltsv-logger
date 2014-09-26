@@ -1,14 +1,9 @@
-import com.typesafe.sbt.SbtGit._
 import com.typesafe.sbt.SbtScalariform._
-import net.virtualvoid.sbt.graph.Plugin._
 import sbt._
 import sbt.Keys._
-import sbtbuildinfo.Plugin._
 import scoverage.ScoverageSbtPlugin
 import scoverage.ScoverageSbtPlugin._
 import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
-import xerial.sbt.Sonatype._
-import SonatypeKeys._
 
 import scala.language.postfixOps
 import scalariform.formatter.preferences._
@@ -25,7 +20,6 @@ object LTSVLoggerBuild extends Build {
     version := theVersion,
     scalaVersion := theScalaVersion
   ) ++
-    graphSettings ++
     scalariformSettings ++
     formatterPrefs ++
     compilerSettings ++
@@ -62,8 +56,7 @@ object LTSVLoggerBuild extends Build {
   lazy val scoverageSettings =
     instrumentSettings ++
     Seq(
-      ScoverageKeys.highlighting := true,
-      testOptions in ScoverageTest += Tests.Argument("-u", "target/test-reports")
+      ScoverageKeys.highlighting := true
     )
 
   lazy val formatterPrefs = Seq(
