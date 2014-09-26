@@ -1,14 +1,11 @@
 package com.beachape.logging
 
-import java.net.InetAddress
-
 import com.github.seratch.ltsv4s.LTSV
 import org.slf4j.{ LoggerFactory, Logger => Slf4jLogger }
 
-import scala.util.Try
-
 /**
- * Helper trait for writing log messages to a dedicated logger in LTSV format.
+ * SLF4JLogger wrapper for writing log messages to a dedicated logger in LTSV format in a
+ * performant way.
  *
  * The logging methods in this trait are performant because the check-enabled-idiom
  * is applied using macros. For example,
@@ -23,21 +20,16 @@ import scala.util.Try
  * if (logger.isDebugEnabled) logger.info(toLtsv("message" -> s"$expensiveMessage"*))
  * }}}
  */
-trait LTSVLogWriter {
+trait LTSVLoggerLike {
 
   import scala.language.experimental.macros
-
-  private val hostname = Try {
-    InetAddress.getLocalHost.getHostName
-  } getOrElse "unknown"
 
   /**
    * The logger to write to.
    */
-  def logger: Slf4jLogger
+  def underlying: Slf4jLogger
 
   /* Info */
-
   /**
    * Write the given key-values as an LTSV info log entry, with the server's hostname added as 'octopartsHost' field.
    */
@@ -47,18 +39,7 @@ trait LTSVLogWriter {
    */
   @inline final def info(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.infoErrImpl
 
-  /**
-   * Write the given key-values as an LTSV info log entry.
-   */
-  @inline final def info(addHostnameField: Boolean, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.infoHostNameImpl
-
-  /**
-   * Write the given key-values and error as an LTSV info log entry.
-   */
-  @inline final def info(addHostnameField: Boolean, error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.infoErrHostNameImpl
-
   /* Debug */
-
   /**
    * Write the given key-values as an LTSV debug log entry, with the server's hostname added as 'octopartsHost' field.
    */
@@ -69,18 +50,7 @@ trait LTSVLogWriter {
    */
   @inline final def debug(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugErrImpl
 
-  /**
-   * Write the given key-values as an LTSV debug log entry.
-   */
-  @inline final def debug(addHostnameField: Boolean, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugHostNameImpl
-
-  /**
-   * Write the given key-values and error as an LTSV debug log entry.
-   */
-  @inline final def debug(addHostnameField: Boolean, error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugErrHostNameImpl
-
   /* Warn */
-
   /**
    * Write the given key-values as an LTSV warn log entry, with the server's hostname added as 'octopartsHost' field.
    */
@@ -91,18 +61,7 @@ trait LTSVLogWriter {
    */
   @inline final def warn(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnErrImpl
 
-  /**
-   * Write the given key-values as an LTSV warn log entry.
-   */
-  @inline final def warn(addHostnameField: Boolean, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnHostNameImpl
-
-  /**
-   * Write the given key-values and error as an LTSV warn log entry.
-   */
-  @inline final def warn(addHostnameField: Boolean, error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnErrHostNameImpl
-
   /* Error */
-
   /**
    * Write the given key-values as an LTSV error log entry, with the server's hostname added as 'octopartsHost' field.
    */
@@ -113,18 +72,7 @@ trait LTSVLogWriter {
    */
   @inline final def error(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorErrImpl
 
-  /**
-   * Write the given key-values as an LTSV error log entry.
-   */
-  @inline final def error(addHostnameField: Boolean, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorHostNameImpl
-
-  /**
-   * Write the given key-values and error as an LTSV error log entry.
-   */
-  @inline final def error(addHostnameField: Boolean, error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorErrHostNameImpl
-
   /* Trace */
-
   /**
    * Write the given key-values as an LTSV trace log entry, with the server's hostname added as 'octopartsHost' field.
    */
@@ -136,22 +84,34 @@ trait LTSVLogWriter {
   @inline final def trace(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceErrImpl
 
   /**
-   * Write the given key-values as an LTSV trace log entry.
+   * Turns a sequence of LTSV pairs into a single LTSV string.
    */
-  @inline final def trace(addHostnameField: Boolean, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceHostNameImpl
-  /**
-   * Write the given key-values and error as an LTSV trace log entry.
-   */
-  @inline final def trace(addHostnameField: Boolean, error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceErrHostNameImpl
-
-  @inline def toLtsv(pairs: Seq[(String, Any)], addHostnameField: Boolean): String = {
-    val pairsWithHost = if (addHostnameField) ("host" -> hostname) +: pairs else pairs
-    val logMsg = pairsWithHost.map { case (k, v) => (k, String.valueOf(v)) }
+  @inline def toLtsv(pairs: (String, Any)*): String = {
+    val logMsg = pairs.map { case (k, v) => (k, String.valueOf(v)) }
     LTSV.dump(logMsg: _*)
   }
 
 }
 
-object LTSVLogWriter extends LTSVLogWriter {
-  val logger = LoggerFactory.getLogger("application")
+class LTSVLogger(val underlying: Slf4jLogger) extends LTSVLoggerLike
+
+object LTSVLogger extends LTSVLoggerLike {
+
+  val underlying = LoggerFactory.getLogger("application")
+
+  /**
+   * Obtains a logger instance.
+   *
+   * @param name the name of the logger
+   * @return a logger
+   */
+  def apply(name: String): LTSVLogger = new LTSVLogger(LoggerFactory.getLogger(name))
+
+  /**
+   * Obtains a logger instance.
+   *
+   * @param clazz a class whose name will be used as logger name
+   * @return a logger
+   */
+  def apply[T](clazz: Class[T]): LTSVLogger = new LTSVLogger(LoggerFactory.getLogger(clazz))
 }

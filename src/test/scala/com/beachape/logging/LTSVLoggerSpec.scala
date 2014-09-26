@@ -6,25 +6,9 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.slf4j.{ Marker, Logger }
 
-class LTSVLogWriterSpec extends FunSpec with MockitoSugar with Matchers {
+class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
 
   val exception = new IllegalArgumentException
-
-  describe("logging with hostnames") {
-    it("should send a message with 'host' to the underlying logger") {
-      val (writer, captureDebugMsg) = writerWithDebugCapture
-      writer.debug(true, "hi" -> "there")
-      captureDebugMsg() contains ("host") should be(true)
-    }
-  }
-
-  describe("logging without hostnames") {
-    it("should send a message without 'host' to the underlying logger") {
-      val (writer, captureDebugMsg) = writerWithDebugCapture
-      writer.debug(false, "hi" -> "there")
-      captureDebugMsg() contains ("host") should be(false)
-    }
-  }
 
   describe("#debug laziness") {
     it("should not do anything, not even evaluate arguments if debug is disabled") {
@@ -175,20 +159,20 @@ class LTSVLogWriterSpec extends FunSpec with MockitoSugar with Matchers {
                      errorEnabled: Boolean = true,
                      infoEnabled: Boolean = true,
                      traceEnabled: Boolean = true,
-                     warnEnabled: Boolean = true): (LTSVLogWriter, Logger) = {
+                     warnEnabled: Boolean = true): (LTSVLoggerLike, Logger) = {
     val loggerLike = mock[Logger]
     when(loggerLike.isDebugEnabled).thenReturn(debugEnabled)
     when(loggerLike.isErrorEnabled).thenReturn(errorEnabled)
     when(loggerLike.isInfoEnabled).thenReturn(infoEnabled)
     when(loggerLike.isTraceEnabled).thenReturn(traceEnabled)
     when(loggerLike.isWarnEnabled).thenReturn(warnEnabled)
-    val writer = new LTSVLogWriter {
-      val logger: Logger = loggerLike
+    val writer = new LTSVLoggerLike {
+      val underlying: Logger = loggerLike
     }
     (writer, loggerLike)
   }
 
-  def writerWithDebugCapture: (LTSVLogWriter, Function0[String]) = {
+  def writerWithDebugCapture: (LTSVLoggerLike, Function0[String]) = {
     var debugMessage: String = ""
     val loggerLike = new Logger {
       override def debug(message: String): Unit = {
@@ -315,8 +299,8 @@ class LTSVLogWriterSpec extends FunSpec with MockitoSugar with Matchers {
 
       override def info(marker: Marker, msg: String, t: Throwable): Unit = ???
     }
-    val writer = new LTSVLogWriter {
-      val logger: Logger = loggerLike
+    val writer = new LTSVLoggerLike {
+      val underlying: Logger = loggerLike
     }
     (writer, () => debugMessage)
   }
