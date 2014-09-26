@@ -62,7 +62,7 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
   If varargs call-by-name was supported in Scala, the above would be implemented as 
   something like 
   
-  {{{ def warn(pairs: => (String, Any) *): Unit = if (logger.isWarnEnabled) debug(toLtsv(pairs)) }}}
+  {{{ def warn(pairs: => (String, Any) *): Unit = if (logger.isWarnEnabled) logger.warn(toLtsv(pairs)) }}}
 **/
 ```
 
