@@ -207,6 +207,19 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
 
     val user = "lloyd"
 
+    describe("#info laziness") {
+      it("should not do anything, not even evaluate arguments if info is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(infoEnabled = false)
+        subject.info(obj)
+        run should be(false)
+      }
+    }
+
     describe("#info without throwable") {
       it("should call .info on the underlying LoggerLike") {
         val (subject, underlying) = writerWithMock()
@@ -220,6 +233,19 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
         val (subject, underlying) = writerWithMock()
         subject.info(exception, Request("GET", "/"), "user" -> user)
         verify(underlying, times(1)).info("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#debug laziness") {
+      it("should not do anything, not even evaluate arguments if debug is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(debugEnabled = false)
+        subject.debug(obj)
+        run should be(false)
       }
     }
 
@@ -239,6 +265,19 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
       }
     }
 
+    describe("#warn laziness") {
+      it("should not do anything, not even evaluate arguments if warn is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(warnEnabled = false)
+        subject.warn(obj)
+        run should be(false)
+      }
+    }
+
     describe("#warn without throwable") {
       it("should call .warn on the underlying LoggerLike") {
         val (subject, underlying) = writerWithMock()
@@ -255,6 +294,19 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
       }
     }
 
+    describe("#error laziness") {
+      it("should not do anything, not even evaluate arguments if error is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(errorEnabled = false)
+        subject.error(obj)
+        run should be(false)
+      }
+    }
+
     describe("#error without throwable") {
       it("should call .error on the underlying LoggerLike") {
         val (subject, underlying) = writerWithMock()
@@ -268,6 +320,19 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
         val (subject, underlying) = writerWithMock()
         subject.error(exception, Request("GET", "/"), "user" -> user)
         verify(underlying, times(1)).error("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#trace laziness") {
+      it("should not do anything, not even evaluate arguments if trace is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(traceEnabled = false)
+        subject.trace(obj)
+        run should be(false)
       }
     }
 
