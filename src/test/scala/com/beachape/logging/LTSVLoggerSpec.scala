@@ -195,6 +195,165 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     }
   }
 
+  describe("Generic usage using an in-scope Ltsvavble[A]") {
+
+    case class Request(method: String, path: String)
+
+    implicit val reqLTSVable = new LTSVable[Request] {
+      def toDoubles(o: Request): Seq[(String, Any)] = {
+        Seq("method" -> o.method, "path" -> o.path)
+      }
+    }
+
+    val user = "lloyd"
+
+    describe("#info laziness") {
+      it("should not do anything, not even evaluate arguments if info is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(infoEnabled = false)
+        subject.info(obj)
+        run should be(false)
+      }
+    }
+
+    describe("#info without throwable") {
+      it("should call .info on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.info(Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).info("method:GET\tpath:/\tuser:lloyd")
+      }
+    }
+
+    describe("#info with throwable") {
+      it("should call .info on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.info(exception, Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).info("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#debug laziness") {
+      it("should not do anything, not even evaluate arguments if debug is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(debugEnabled = false)
+        subject.debug(obj)
+        run should be(false)
+      }
+    }
+
+    describe("#debug without throwable") {
+      it("should call .debug on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.debug(Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).debug("method:GET\tpath:/\tuser:lloyd")
+      }
+    }
+
+    describe("#debug with throwable") {
+      it("should call .debug on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.debug(exception, Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).debug("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#warn laziness") {
+      it("should not do anything, not even evaluate arguments if warn is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(warnEnabled = false)
+        subject.warn(obj)
+        run should be(false)
+      }
+    }
+
+    describe("#warn without throwable") {
+      it("should call .warn on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.warn(Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).warn("method:GET\tpath:/\tuser:lloyd")
+      }
+    }
+
+    describe("#warn with throwable") {
+      it("should call .warn on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.warn(exception, Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).warn("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#error laziness") {
+      it("should not do anything, not even evaluate arguments if error is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(errorEnabled = false)
+        subject.error(obj)
+        run should be(false)
+      }
+    }
+
+    describe("#error without throwable") {
+      it("should call .error on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.error(Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).error("method:GET\tpath:/\tuser:lloyd")
+      }
+    }
+
+    describe("#error with throwable") {
+      it("should call .error on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.error(exception, Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).error("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+    describe("#trace laziness") {
+      it("should not do anything, not even evaluate arguments if trace is disabled") {
+        var run = false
+        lazy val obj = {
+          run = true
+          Request("GET", "/")
+        }
+        val (subject, underlying) = writerWithMock(traceEnabled = false)
+        subject.trace(obj)
+        run should be(false)
+      }
+    }
+
+    describe("#trace without throwable") {
+      it("should call .trace on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.trace(Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).trace("method:GET\tpath:/\tuser:lloyd")
+      }
+    }
+
+    describe("#trace with throwable") {
+      it("should call .trace on the underlying LoggerLike") {
+        val (subject, underlying) = writerWithMock()
+        subject.trace(exception, Request("GET", "/"), "user" -> user)
+        verify(underlying, times(1)).trace("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+    }
+
+  }
+
   def writerWithMock(debugEnabled: Boolean = true,
                      errorEnabled: Boolean = true,
                      infoEnabled: Boolean = true,

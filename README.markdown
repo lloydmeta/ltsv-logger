@@ -64,6 +64,22 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
   
   {{{ def warn(pairs: => (String, Any) *): Unit = if (logger.isWarnEnabled) logger.warn(toLtsv(pairs)) }}}
 **/
+
+/* 
+  Alternatively, if you want to log a generic object, created a LTSVable[A] typed to your object.
+
+  This will also still be lazy.
+*/
+
+case class Request(method: String, path: String)
+
+implicit val reqLTSVable = new LTSVable[Request] {
+  def toDoubles(o: Request): Seq[(String, Any)] = {
+    Seq("method" -> o.method, "path" -> o.path)
+  }
+}
+
+LTSVLogger.info(Request("GET", "/"), "hello" -> 3)
 ```
 
 ## Dependencies
