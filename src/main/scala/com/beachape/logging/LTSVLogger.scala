@@ -44,9 +44,19 @@ trait LTSVLoggerLike {
   @inline final def info(message: String): Unit = macro LTSVLogWriterMacros.infoMsgImpl
 
   /**
-   * Write the given key-values and error as an LTSV info log entry, with the server's hostname added as 'octopartsHost' field.
+   * Write the given key-values and error as an LTSV info log entry
    */
   @inline final def info(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.infoErrImpl
+
+  /**
+   * Write a given Generic [A] object into LTSV along with any number of pairs
+   */
+  @inline final def info[A](obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.infoGenImpl[A]
+
+  /**
+   * Write a given Generic [A] object and error into LTSV along with any number of pairs
+   */
+  @inline final def info[A](error: Throwable, obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.infoGenErrImpl[A]
 
   /* Debug */
   /**
@@ -67,6 +77,16 @@ trait LTSVLoggerLike {
    */
   @inline final def debug(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.debugErrImpl
 
+  /**
+   * Write a given Generic [A] object into LTSV along with any number of pairs
+   */
+  @inline final def debug[A](obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.debugGenImpl[A]
+
+  /**
+   * Write a given Generic [A] object and error into LTSV along with any number of pairs
+   */
+  @inline final def debug[A](error: Throwable, obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.debugGenErrImpl[A]
+
   /* Warn */
   /**
    * Write the given key-values as an LTSV warn log entry
@@ -85,6 +105,16 @@ trait LTSVLoggerLike {
    * Write the given key-values and error as an LTSV warn log entry
    */
   @inline final def warn(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.warnErrImpl
+
+  /**
+   * Write a given Generic [A] object into LTSV along with any number of pairs
+   */
+  @inline final def warn[A](obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.warnGenImpl[A]
+
+  /**
+   * Write a given Generic [A] object and error into LTSV along with any number of pairs
+   */
+  @inline final def warn[A](error: Throwable, obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.warnGenErrImpl[A]
 
   /* Error */
   /**
@@ -105,6 +135,16 @@ trait LTSVLoggerLike {
    */
   @inline final def error(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.errorErrImpl
 
+  /**
+   * Write a given Generic [A] object into LTSV along with any number of pairs
+   */
+  @inline final def error[A](obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.errorGenImpl[A]
+
+  /**
+   * Write a given Generic [A] object and error into LTSV along with any number of pairs
+   */
+  @inline final def error[A](error: Throwable, obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.errorGenErrImpl[A]
+
   /* Trace */
   /**
    * Write the given key-values as an LTSV trace log entry
@@ -123,6 +163,16 @@ trait LTSVLoggerLike {
    * Write the given key-values and error as an LTSV trace log entry
    */
   @inline final def trace(error: Throwable, pairs: (String, Any)*): Unit = macro LTSVLogWriterMacros.traceErrImpl
+
+  /**
+   * Write a given Generic [A] object into LTSV along with any number of pairs
+   */
+  @inline final def trace[A](obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.traceGenImpl[A]
+
+  /**
+   * Write a given Generic [A] object and error into LTSV along with any number of pairs
+   */
+  @inline final def trace[A](error: Throwable, obj: A, pairs: (String, Any)*)(implicit ltsvable: LTSVable[A]): Unit = macro LTSVLogWriterMacros.traceGenErrImpl[A]
 
   /**
    * Turns a sequence of LTSV pairs into a single LTSV string.
