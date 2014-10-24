@@ -352,6 +352,43 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
       }
     }
 
+    describe("resolving LTSVable") {
+      trait ReqHeaders {
+        def method: String
+        def path: String
+      }
+
+      case class ReqWithBody(method: String, path: String, body: String) extends ReqHeaders
+
+      trait LowPriority {
+        implicit val reqHeadersLtsvable = new LTSVable[ReqHeaders] {
+          def toDoubles(o: ReqHeaders) = Seq("method" -> o.method, "path" -> o.path)
+        }
+      }
+
+      object LowPriorityOnly extends LowPriority
+
+      object HighPriority extends LowPriority {
+        implicit val reqWithBodyLtsvable = new LTSVable[ReqWithBody] {
+          def toDoubles(o: ReqWithBody) = Seq("method" -> o.method, "path" -> o.path, "body" -> o.body)
+        }
+      }
+
+      describe("should work with just a parent LTSVable in scope") {
+        import LowPriorityOnly._
+        val (subject, underlying) = writerWithMock()
+        subject.trace(exception, ReqWithBody("GET", "/", "hello"), "user" -> user)
+        verify(underlying, times(1)).trace("method:GET\tpath:/\tuser:lloyd", exception)
+      }
+
+      describe("should use a more specific LTSVable if one is in scope") {
+        import HighPriority._
+        val (subject, underlying) = writerWithMock()
+        subject.trace(exception, ReqWithBody("GET", "/", "hello"), "user" -> user)
+        verify(underlying, times(1)).trace("method:GET\tpath:/\tbody:hello\tuser:lloyd", exception)
+      }
+    }
+
   }
 
   def writerWithMock(debugEnabled: Boolean = true,
