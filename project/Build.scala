@@ -10,7 +10,7 @@ import scalariform.formatter.preferences._
 
 object LTSVLoggerBuild extends Build {
 
-  val theVersion = "0.0.7"
+  val theVersion = "0.0.8-SNAPSHOT"
   val theScalaVersion = "2.11.2"
 
   val slf4jVersion = "1.7.7"
