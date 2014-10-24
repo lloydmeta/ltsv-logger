@@ -200,7 +200,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     case class Request(method: String, path: String)
 
     implicit val reqLTSVable = new LTSVable[Request] {
-      def toDoubles(o: Request): Seq[(String, Any)] = {
+      def toPairs(o: Request): Seq[(String, Any)] = {
         Seq("method" -> o.method, "path" -> o.path)
       }
     }
@@ -362,7 +362,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
 
       trait LowPriority {
         implicit val reqHeadersLtsvable = new LTSVable[ReqHeaders] {
-          def toDoubles(o: ReqHeaders) = Seq("method" -> o.method, "path" -> o.path)
+          def toPairs(o: ReqHeaders) = Seq("method" -> o.method, "path" -> o.path)
         }
       }
 
@@ -370,7 +370,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
 
       object HighPriority extends LowPriority {
         implicit val reqWithBodyLtsvable = new LTSVable[ReqWithBody] {
-          def toDoubles(o: ReqWithBody) = Seq("method" -> o.method, "path" -> o.path, "body" -> o.body)
+          def toPairs(o: ReqWithBody) = Seq("method" -> o.method, "path" -> o.path, "body" -> o.body)
         }
       }
 

@@ -30,7 +30,7 @@ Add the following to your `build.sbt`
 // in your build.sbt
 
 libraryDependencies ++= Seq(
-    "com.beachape" %% "ltsv-logger" % "0.0.7", 
+    "com.beachape" %% "ltsv-logger" % "0.0.8", 
     "ch.qos.logback" % "logback-classic" % "1.1.2", // or any SLF4J compatible log lib you want to use
 )
 ```
@@ -42,7 +42,7 @@ In that case, download a SNAPSHOT release of the same version by adding this to 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
 libraryDependencies ++= Seq(
-    "com.beachape" %% "ltsv-logger" % "0.0.7-SNAPSHOT", 
+    "com.beachape" %% "ltsv-logger" % "0.0.8-SNAPSHOT", 
     "ch.qos.logback" % "logback-classic" % "1.1.2", // or any slf4j compatible log lib you want to use
 )
 ```
@@ -74,7 +74,7 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
 case class Request(method: String, path: String)
 
 implicit val reqLTSVable = new LTSVable[Request] {
-  def toDoubles(o: Request): Seq[(String, Any)] = {
+  def toPairs(o: Request): Seq[(String, Any)] = {
     Seq("method" -> o.method, "path" -> o.path)
   }
 }

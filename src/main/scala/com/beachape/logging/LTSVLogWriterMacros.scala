@@ -116,7 +116,7 @@ private[logging] object LTSVLogWriterMacros {
 
   private def ltsvErrMsgLogAtLevelIfEnabledGen[A](c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], obj: c.Expr[A], ltsvable: c.Expr[LTSVable[A]], pairs: c.Expr[(String, Any)]*): c.Expr[Unit] = {
     import c.universe._
-    val generatedPairs = c.Expr[Seq[(String, Any)]](q"""$ltsvable.toDoubles($obj)""")
+    val generatedPairs = c.Expr[Seq[(String, Any)]](q"""$ltsvable.toPairs($obj)""")
     val isLevelEnabled = newTermName(s"is${level.toLowerCase.capitalize}Enabled")
     val logLevel = newTermName(level.toLowerCase)
     val writer = c.prefix.tree
