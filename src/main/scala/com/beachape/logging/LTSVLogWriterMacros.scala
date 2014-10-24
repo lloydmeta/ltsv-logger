@@ -108,8 +108,8 @@ private[logging] object LTSVLogWriterMacros {
     val logLevel = newTermName(level.toLowerCase)
     val writer = c.prefix.tree
     val tree = error match {
-      case Some(err) => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(..$pairs), $err)"
-      case None => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(..$pairs))"
+      case Some(err) => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs), $err)"
+      case None => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs))"
     }
     c.Expr[Unit](tree)
   }
@@ -121,8 +121,8 @@ private[logging] object LTSVLogWriterMacros {
     val logLevel = newTermName(level.toLowerCase)
     val writer = c.prefix.tree
     val tree = error match {
-      case Some(err) => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*), $err)"
-      case None => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*))"
+      case Some(err) => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*), $err)"
+      case None => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*))"
     }
     c.Expr[Unit](tree)
   }
