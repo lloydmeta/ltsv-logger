@@ -14,7 +14,15 @@ private[logging] object LTSVLogWriterMacros {
     ltsvErrLogAtLevelIfEnabled(c)("info", Some(error), pairs: _*)
 
   def infoMsgImpl(c: LoggerContext)(message: c.Expr[String]): c.Expr[Unit] =
-    ltsvErrMsgLogAtLevelIfenabled(c)("info", None, message)
+    ltsvErrMsgLogAtLevelIfEnabled(c)("info", None, message)
+
+  def infoGenImpl[A: c.WeakTypeTag](c: LoggerContext)(obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("info", None, obj, ltsvable, pairs: _*)
+  }
+
+  def infoGenErrImpl[A: c.WeakTypeTag](c: LoggerContext)(error: c.Expr[Throwable], obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("info", Some(error), obj, ltsvable, pairs: _*)
+  }
 
   /* Debug */
   def debugImpl(c: LoggerContext)(pairs: c.Expr[(String, Any)]*): c.Expr[Unit] =
@@ -24,7 +32,15 @@ private[logging] object LTSVLogWriterMacros {
     ltsvErrLogAtLevelIfEnabled(c)("debug", Some(error), pairs: _*)
 
   def debugMsgImpl(c: LoggerContext)(message: c.Expr[String]): c.Expr[Unit] =
-    ltsvErrMsgLogAtLevelIfenabled(c)("debug", None, message)
+    ltsvErrMsgLogAtLevelIfEnabled(c)("debug", None, message)
+
+  def debugGenImpl[A: c.WeakTypeTag](c: LoggerContext)(obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("debug", None, obj, ltsvable, pairs: _*)
+  }
+
+  def debugGenErrImpl[A: c.WeakTypeTag](c: LoggerContext)(error: c.Expr[Throwable], obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("debug", Some(error), obj, ltsvable, pairs: _*)
+  }
 
   /* Warn */
   def warnImpl(c: LoggerContext)(pairs: c.Expr[(String, Any)]*): c.Expr[Unit] =
@@ -34,7 +50,15 @@ private[logging] object LTSVLogWriterMacros {
     ltsvErrLogAtLevelIfEnabled(c)("warn", Some(error), pairs: _*)
 
   def warnMsgImpl(c: LoggerContext)(message: c.Expr[String]): c.Expr[Unit] =
-    ltsvErrMsgLogAtLevelIfenabled(c)("warn", None, message)
+    ltsvErrMsgLogAtLevelIfEnabled(c)("warn", None, message)
+
+  def warnGenImpl[A: c.WeakTypeTag](c: LoggerContext)(obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("warn", None, obj, ltsvable, pairs: _*)
+  }
+
+  def warnGenErrImpl[A: c.WeakTypeTag](c: LoggerContext)(error: c.Expr[Throwable], obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("warn", Some(error), obj, ltsvable, pairs: _*)
+  }
 
   /* Error */
   def errorImpl(c: LoggerContext)(pairs: c.Expr[(String, Any)]*): c.Expr[Unit] =
@@ -44,7 +68,15 @@ private[logging] object LTSVLogWriterMacros {
     ltsvErrLogAtLevelIfEnabled(c)("error", Some(error), pairs: _*)
 
   def errorMsgImpl(c: LoggerContext)(message: c.Expr[String]): c.Expr[Unit] =
-    ltsvErrMsgLogAtLevelIfenabled(c)("error", None, message)
+    ltsvErrMsgLogAtLevelIfEnabled(c)("error", None, message)
+
+  def errorGenImpl[A: c.WeakTypeTag](c: LoggerContext)(obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("error", None, obj, ltsvable, pairs: _*)
+  }
+
+  def errorGenErrImpl[A: c.WeakTypeTag](c: LoggerContext)(error: c.Expr[Throwable], obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("error", Some(error), obj, ltsvable, pairs: _*)
+  }
 
   /* Trace */
   def traceImpl(c: LoggerContext)(pairs: c.Expr[(String, Any)]*): c.Expr[Unit] =
@@ -54,9 +86,17 @@ private[logging] object LTSVLogWriterMacros {
     ltsvErrLogAtLevelIfEnabled(c)("trace", Some(error), pairs: _*)
 
   def traceMsgImpl(c: LoggerContext)(message: c.Expr[String]): c.Expr[Unit] =
-    ltsvErrMsgLogAtLevelIfenabled(c)("trace", None, message)
+    ltsvErrMsgLogAtLevelIfEnabled(c)("trace", None, message)
 
-  private def ltsvErrMsgLogAtLevelIfenabled(c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], message: c.Expr[String]): c.Expr[Unit] = {
+  def traceGenImpl[A: c.WeakTypeTag](c: LoggerContext)(obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("trace", None, obj, ltsvable, pairs: _*)
+  }
+
+  def traceGenErrImpl[A: c.WeakTypeTag](c: LoggerContext)(error: c.Expr[Throwable], obj: c.Expr[A], pairs: c.Expr[(String, Any)]*)(ltsvable: c.Expr[LTSVable[A]]): c.Expr[Unit] = {
+    ltsvErrMsgLogAtLevelIfEnabledGen(c)("trace", Some(error), obj, ltsvable, pairs: _*)
+  }
+
+  private def ltsvErrMsgLogAtLevelIfEnabled(c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], message: c.Expr[String]): c.Expr[Unit] = {
     import c.universe._
     val pair = c.Expr[(String, String)](q"""("message" -> $message)""")
     ltsvErrLogAtLevelIfEnabled(c)(level, error, pair)
@@ -74,4 +114,16 @@ private[logging] object LTSVLogWriterMacros {
     c.Expr[Unit](tree)
   }
 
+  private def ltsvErrMsgLogAtLevelIfEnabledGen[A](c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], obj: c.Expr[A], ltsvable: c.Expr[LTSVable[A]], pairs: c.Expr[(String, Any)]*): c.Expr[Unit] = {
+    import c.universe._
+    val generatedPairs = c.Expr[Seq[(String, Any)]](q"""$ltsvable.toDoubles($obj)""")
+    val isLevelEnabled = newTermName(s"is${level.toLowerCase.capitalize}Enabled")
+    val logLevel = newTermName(level.toLowerCase)
+    val writer = c.prefix.tree
+    val tree = error match {
+      case Some(err) => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*), $err)"
+      case None => q"if (${writer}.underlying.$isLevelEnabled) $writer.underlying.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*))"
+    }
+    c.Expr[Unit](tree)
+  }
 }
