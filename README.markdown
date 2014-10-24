@@ -74,7 +74,7 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
 case class Request(method: String, path: String)
 
 implicit val reqLTSVable = new LTSVable[Request] {
-  def toDoubles(o: Request): Seq[(String, Any)] = {
+  def toPairs(o: Request): Seq[(String, Any)] = {
     Seq("method" -> o.method, "path" -> o.path)
   }
 }
