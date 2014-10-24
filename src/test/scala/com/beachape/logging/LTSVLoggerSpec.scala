@@ -403,7 +403,7 @@ class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
     when(loggerLike.isTraceEnabled).thenReturn(traceEnabled)
     when(loggerLike.isWarnEnabled).thenReturn(warnEnabled)
     val writer = new LTSVLoggerLike {
-      val underlying: Logger = loggerLike
+      val underlyingLogger: Logger = loggerLike
     }
     (writer, loggerLike)
   }

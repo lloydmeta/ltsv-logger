@@ -27,7 +27,7 @@ trait LTSVLoggerLike {
   /**
    * The logger to write to.
    */
-  def underlying: Slf4jLogger
+  def underlyingLogger: Slf4jLogger
 
   /* Info */
   /**
@@ -184,11 +184,11 @@ trait LTSVLoggerLike {
 
 }
 
-class LTSVLogger(val underlying: Slf4jLogger) extends LTSVLoggerLike
+class LTSVLogger(val underlyingLogger: Slf4jLogger) extends LTSVLoggerLike
 
 object LTSVLogger extends LTSVLoggerLike {
 
-  val underlying = LoggerFactory.getLogger("application")
+  val underlyingLogger = LoggerFactory.getLogger("application")
 
   /**
    * Obtains a logger instance.
