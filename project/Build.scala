@@ -10,8 +10,8 @@ import scalariform.formatter.preferences._
 
 object LTSVLoggerBuild extends Build {
 
-  val theVersion = "0.0.9-SNAPSHOT"
-  val theScalaVersion = "2.11.2"
+  val theVersion = "0.0.9"
+  val theScalaVersion = "2.11.5"
 
   val slf4jVersion = "1.7.7"
 
@@ -68,7 +68,7 @@ object LTSVLoggerBuild extends Build {
   lazy val root = Project(id = "ltsv-logger", base = file("."), settings = commonWithPublishSettings)
     .settings(
       name := "ltsv-logger",
-      crossScalaVersions := Seq("2.10.4", "2.11.2"),
+      crossScalaVersions := Seq("2.10.4", "2.11.5"),
       crossVersion := CrossVersion.binary,
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-reflect" % scalaVersion.value,
