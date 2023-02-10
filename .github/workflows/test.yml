@@ -7,7 +7,8 @@ jobs:
     strategy:
       matrix:
         java_version: [
-          "adopt@1.8.0-292"
+          "openjdk@1.11.0-2",
+          "openjdk@1.17.0"
         ]
     steps:
       - name: Checkout
@@ -22,4 +23,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: scoverage-report
-          path: target/scala-2.11/scoverage-report
+          path: target/scala-2.13/scoverage-report
