@@ -3,7 +3,6 @@ import sbt._
 import sbt.Keys._
 import scoverage.ScoverageSbtPlugin
 import scoverage.ScoverageSbtPlugin._
-import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
 
 import scala.language.postfixOps
 import scalariform.formatter.preferences._
@@ -25,9 +24,7 @@ object LTSVLoggerBuild extends Build {
     compilerSettings ++
     resolverSettings ++
     ideSettings ++
-    testSettings ++
-    coverallsSettings ++
-    scoverageSettings
+    testSettings
 
   lazy val commonWithPublishSettings =
     commonSettings ++
@@ -49,15 +46,9 @@ object LTSVLoggerBuild extends Build {
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xlint")
   )
 
-  lazy val testSettings = Seq(Test, ScoverageSbtPlugin.ScoverageTest).flatMap { t =>
-    Seq(parallelExecution in t := false) // Avoid DB-related tests stomping on each other
-  }
-
-  lazy val scoverageSettings =
-    instrumentSettings ++
-    Seq(
-      ScoverageKeys.highlighting := true
-    )
+  lazy val testSettings = Seq(
+    parallelExecution in Test := false // Avoid DB-related tests stomping on each other
+  )
 
   lazy val formatterPrefs = Seq(
     ScalariformKeys.preferences := ScalariformKeys.preferences.value
@@ -68,7 +59,7 @@ object LTSVLoggerBuild extends Build {
   lazy val root = Project(id = "ltsv-logger", base = file("."), settings = commonWithPublishSettings)
     .settings(
       name := "ltsv-logger",
-      crossScalaVersions := Seq("2.10.4", "2.11.5"),
+      crossScalaVersions := Seq("2.11.5"),
       crossVersion := CrossVersion.binary,
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-reflect" % scalaVersion.value,
@@ -76,18 +67,7 @@ object LTSVLoggerBuild extends Build {
         "com.github.seratch" %% "ltsv4s" % "1.0.2",
         "org.mockito" % "mockito-all" % "1.9.5" % "test",
         "org.scalatest" %% "scalatest" % "2.2.1" % "test"
-      ) ++ {
-        val additionalMacroDeps = CrossVersion.partialVersion(scalaVersion.value) match {
-          // if scala 2.11+ is used, quasiquotes are merged into scala-reflect
-          case Some((2, scalaMajor)) if scalaMajor >= 11 =>
-            Nil
-          // in Scala 2.10, quasiquotes are provided by macro paradise
-          case Some((2, 10)) =>
-            Seq(
-              compilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full),
-              "org.scalamacros" %% "quasiquotes" % "2.0.0" cross CrossVersion.binary)
-        }
-        additionalMacroDeps }
+      )
     )
 
   // Settings for publishing to Maven Central
