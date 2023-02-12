@@ -13,6 +13,6 @@ out
 .project
 
 .settings
-
+.bsp
 #OSX
 .DS_Store

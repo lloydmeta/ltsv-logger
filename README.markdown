@@ -1,4 +1,4 @@
-# LTSV-logger [![Build Status](https://travis-ci.org/lloydmeta/ltsv-logger.svg?branch=develop)](https://travis-ci.org/lloydmeta/ltsv-logger)
+# LTSV-logger [![Build](https://github.com/lloydmeta/ltsv-logger/actions/workflows/test.yml/badge.svg)](https://github.com/lloydmeta/ltsv-logger/actions/workflows/test.yml)
 
 *What's LTSV?* [ltsv.org](http://ltsv.org/) has all the details, but to get you started:
 
