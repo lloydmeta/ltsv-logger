@@ -4,7 +4,7 @@ import scala.reflect.macros._
 
 private[logging] object LTSVLogWriterMacros {
 
-  type LoggerContext = Context { type PrefixType = LTSVLoggerLike }
+  type LoggerContext = whitebox.Context { type PrefixType = LTSVLoggerLike }
 
   /* Info */
   def infoImpl(c: LoggerContext)(pairs: c.Expr[(String, Any)]*): c.Expr[Unit] =
@@ -104,12 +104,12 @@ private[logging] object LTSVLogWriterMacros {
 
   private def ltsvErrLogAtLevelIfEnabled(c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], pairs: c.Expr[(String, Any)]*): c.Expr[Unit] = {
     import c.universe._
-    val isLevelEnabled = newTermName(s"is${level.toLowerCase.capitalize}Enabled")
-    val logLevel = newTermName(level.toLowerCase)
+    val isLevelEnabled = TermName(s"is${level.toLowerCase.capitalize}Enabled")
+    val logLevel = TermName(level.toLowerCase)
     val writer = c.prefix.tree
     val tree = error match {
-      case Some(err) => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs), $err)"
-      case None => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs))"
+      case Some(err) => q"if ($writer.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs), $err)"
+      case None => q"if ($writer.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(..$pairs))"
     }
     c.Expr[Unit](tree)
   }
@@ -117,12 +117,12 @@ private[logging] object LTSVLogWriterMacros {
   private def ltsvErrMsgLogAtLevelIfEnabledGen[A](c: LoggerContext)(level: String, error: Option[c.Expr[Throwable]], obj: c.Expr[A], ltsvable: c.Expr[LTSVable[A]], pairs: c.Expr[(String, Any)]*): c.Expr[Unit] = {
     import c.universe._
     val generatedPairs = c.Expr[Seq[(String, Any)]](q"""$ltsvable.toPairs($obj)""")
-    val isLevelEnabled = newTermName(s"is${level.toLowerCase.capitalize}Enabled")
-    val logLevel = newTermName(level.toLowerCase)
+    val isLevelEnabled = TermName(s"is${level.toLowerCase.capitalize}Enabled")
+    val logLevel = TermName(level.toLowerCase)
     val writer = c.prefix.tree
     val tree = error match {
-      case Some(err) => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*), $err)"
-      case None => q"if (${writer}.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*))"
+      case Some(err) => q"if ($writer.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*), $err)"
+      case None => q"if ($writer.underlyingLogger.$isLevelEnabled) $writer.underlyingLogger.$logLevel($writer.toLtsv(($generatedPairs ++ Seq(..$pairs)):_*))"
     }
     c.Expr[Unit](tree)
   }

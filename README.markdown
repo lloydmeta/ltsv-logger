@@ -1,11 +1,11 @@
-# LTSV-logger [![Build Status](https://travis-ci.org/lloydmeta/ltsv-logger.svg?branch=develop)](https://travis-ci.org/lloydmeta/ltsv-logger)
+# LTSV-logger [![Build](https://github.com/lloydmeta/ltsv-logger/actions/workflows/test.yml/badge.svg)](https://github.com/lloydmeta/ltsv-logger/actions/workflows/test.yml)
 
-*What's LTSV?* [ltsv.org](http://ltsv.org/) has all the details, but to get you started: 
+*What's LTSV?* [ltsv.org](http://ltsv.org/) has all the details, but to get you started:
 
 > With the LTSV format, you can parse each line by spliting with TAB (like original TSV format) easily, and extend any fields with unique labels in no particular order.
 
-LTSV-logger is a performant and DRY LTSV logger wrapping SLF4J to provide nice LTSV logging for Scala. No need to wrap your LTSV pairs in 
-`Seq`s or pay at runtime for [call-by-name](http://infoscience.epfl.ch/record/128135/files/paper.pdf) 
+LTSV-logger is a performant and DRY LTSV logger wrapping SLF4J to provide nice LTSV logging for Scala. No need to wrap your LTSV pairs in
+`Seq`s or pay at runtime for [call-by-name](http://infoscience.epfl.ch/record/128135/files/paper.pdf)
 argument access.
 
 It's convenient, because you can simply call log methods without checking whether the respective log level is enabled:
@@ -30,7 +30,7 @@ Add the following to your `build.sbt`
 // in your build.sbt
 
 libraryDependencies ++= Seq(
-    "com.beachape" %% "ltsv-logger" % "0.0.8", 
+    "com.beachape" %% "ltsv-logger" % "0.1.0",
     "ch.qos.logback" % "logback-classic" % "1.1.2", // or any SLF4J compatible log lib you want to use
 )
 ```
@@ -42,7 +42,7 @@ In that case, download a SNAPSHOT release of the same version by adding this to 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
 libraryDependencies ++= Seq(
-    "com.beachape" %% "ltsv-logger" % "0.0.8-SNAPSHOT", 
+    "com.beachape" %% "ltsv-logger" % "0.1.0-SNAPSHOT",
     "ch.qos.logback" % "logback-classic" % "1.1.2", // or any slf4j compatible log lib you want to use
 )
 ```
@@ -58,14 +58,14 @@ LTSVLogger.warn(new IllegalArgumentException, "hello" -> 3)
 /**
   All of the above will act "lazily" at runtime and not be computed/referenced if the respective
   levels are not enabled.
-  
-  If varargs call-by-name was supported in Scala, the above would be implemented as 
-  something like 
-  
+
+  If varargs call-by-name was supported in Scala, the above would be implemented as
+  something like
+
   {{{ def warn(pairs: => (String, Any) *): Unit = if (logger.isWarnEnabled) logger.warn(toLtsv(pairs)) }}}
 **/
 
-/* 
+/*
   Alternatively, if you want to log a generic object, created a LTSVable[A] typed to your object.
 
   This will also still be lazy.
