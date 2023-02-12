@@ -1,12 +1,13 @@
 package com.beachape.logging
 
-import org.scalatest.{ Matchers, FunSpec }
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.mockito.Matchers._
-import org.slf4j.{ Marker, Logger }
+import org.slf4j.Logger
 
-class LTSVLoggerSpec extends FunSpec with MockitoSugar with Matchers {
+class LTSVLoggerSpec extends AnyFunSpec with MockitoSugar with Matchers {
 
   val exception = new IllegalArgumentException
 
