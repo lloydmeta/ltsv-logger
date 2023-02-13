@@ -17,7 +17,7 @@ import org.slf4j.{ LoggerFactory, Logger => Slf4jLogger }
  * gets expanded at compile-time to
  *
  * {{{
- * if (logger.isDebugEnabled) logger.info(toLtsv("message" -> s"$expensiveMessage"*))
+ * if (logger.isInfoEnabled) logger.info(toLtsv("message" -> s"$expensiveMessage"*))
  * }}}
  */
 trait LTSVLoggerLike {

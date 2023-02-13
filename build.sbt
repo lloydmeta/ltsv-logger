@@ -1,5 +1,5 @@
 val theVersion = "0.1.1-SNAPSHOT"
-val theScalaVersion = "2.13.10"
+val theScalaVersion = "3.2.2"
 
 val slf4jVersion = "1.7.36"
 
@@ -16,7 +16,14 @@ lazy val commonWithPublishSettings =
     publishSettings
 
 lazy val compilerSettings = Seq(
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xlint")
+  scalacOptions ++= {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, _)) =>
+        Seq("-unchecked", "-deprecation", "-feature", "-Xlint")
+      case _ =>
+        Seq("-unchecked", "-deprecation", "-feature")
+    }
+  }
 )
 
 lazy val testSettings = Seq(
@@ -27,12 +34,18 @@ lazy val testSettings = Seq(
 lazy val root = Project(id = "ltsv-logger", base = file(".")).settings(commonWithPublishSettings)
   .settings(
     name := "ltsv-logger",
-    crossScalaVersions := Seq("2.12.17", "2.13.10"),
+    crossScalaVersions := Seq("3.2.2", "2.13.10", "2.12.17"),
     crossVersion := CrossVersion.binary,
-    libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    libraryDependencies ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, _)) =>
+          Seq("org.scala-lang" % "scala-reflect" % scalaVersion.value)
+        case _ =>
+          Nil
+      }
+    } ++ Seq(
       "org.slf4j" % "slf4j-api" % slf4jVersion,
-      "com.github.seratch" %% "ltsv4s" % "1.0.4",
+      "com.github.seratch" %% "ltsv4s" % "1.1.0",
       "org.scalatest" %% "scalatest" % "3.2.15" % Test,
       "org.scalatestplus" %% "mockito-4-6" % "3.2.15.0" % Test
     )
