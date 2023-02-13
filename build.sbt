@@ -1,4 +1,4 @@
-val theVersion = "0.1.1-SNAPSHOT"
+val theVersion = "0.1.1"
 val theScalaVersion = "3.2.2"
 
 val slf4jVersion = "1.7.36"
