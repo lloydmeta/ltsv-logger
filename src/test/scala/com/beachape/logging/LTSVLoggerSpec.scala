@@ -200,11 +200,8 @@ class LTSVLoggerSpec extends AnyFunSpec with MockitoSugar with Matchers {
 
     case class Request(method: String, path: String)
 
-    implicit val reqLTSVable = new LTSVable[Request] {
-      def toPairs(o: Request): Seq[(String, Any)] = {
-        Seq("method" -> o.method, "path" -> o.path)
-      }
-    }
+    implicit val reqLTSVable: LTSVable[Request] =
+      (o: Request) => Seq("method" -> o.method, "path" -> o.path)
 
     val user = "lloyd"
 
@@ -362,28 +359,26 @@ class LTSVLoggerSpec extends AnyFunSpec with MockitoSugar with Matchers {
       case class ReqWithBody(method: String, path: String, body: String) extends ReqHeaders
 
       trait LowPriority {
-        implicit val reqHeadersLtsvable = new LTSVable[ReqHeaders] {
-          def toPairs(o: ReqHeaders) = Seq("method" -> o.method, "path" -> o.path)
-        }
+        implicit val reqHeadersLtsvable: LTSVable[ReqHeaders] =
+          (o: ReqHeaders) => Seq("method" -> o.method, "path" -> o.path)
       }
 
       object LowPriorityOnly extends LowPriority
 
       object HighPriority extends LowPriority {
-        implicit val reqWithBodyLtsvable = new LTSVable[ReqWithBody] {
-          def toPairs(o: ReqWithBody) = Seq("method" -> o.method, "path" -> o.path, "body" -> o.body)
-        }
+        implicit val reqWithBodyLtsvable: LTSVable[ReqWithBody] =
+          (o: ReqWithBody) => Seq("method" -> o.method, "path" -> o.path, "body" -> o.body)
       }
 
       describe("should work with just a parent LTSVable in scope") {
-        import LowPriorityOnly._
+        import LowPriorityOnly.reqHeadersLtsvable
         val (subject, underlying) = writerWithMock()
         subject.trace(exception, ReqWithBody("GET", "/", "hello"), "user" -> user)
         verify(underlying, times(1)).trace("method:GET\tpath:/\tuser:lloyd", exception)
       }
 
       describe("should use a more specific LTSVable if one is in scope") {
-        import HighPriority._
+        import HighPriority.reqWithBodyLtsvable
         val (subject, underlying) = writerWithMock()
         subject.trace(exception, ReqWithBody("GET", "/", "hello"), "user" -> user)
         verify(underlying, times(1)).trace("method:GET\tpath:/\tbody:hello\tuser:lloyd", exception)

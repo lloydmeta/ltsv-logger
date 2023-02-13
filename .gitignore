@@ -16,3 +16,4 @@ out
 .bsp
 #OSX
 .DS_Store
+.vscode
